@@ -34,7 +34,7 @@ function teardown {
 ###### Check node count
 function check_node_count() {
   log "Checking node count"
-  count=20
+  count=50
   while (( $count > 0 )); do
     log "  ... counting down $count"
     node_count=$(${remote_exec} curl -s http://localhost:1050/system/health/v1/nodes | jq '.nodes | length')
@@ -89,7 +89,7 @@ trap teardown EXIT
 
 log "Validating marathon app"
 count=0
-while [[ ${count} -lt 25 ]]; do
+while [[ ${count} -lt 50 ]]; do
   count=$((count+1))
   log "  ... cycle $count"
   running=$(${remote_exec} ./dcos marathon app show /web | jq .tasksRunning)

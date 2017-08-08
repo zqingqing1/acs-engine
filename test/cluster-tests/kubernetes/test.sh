@@ -63,7 +63,7 @@ fi
 ###### Check node count
 function check_node_count() {
   log "Checking node count"
-  count=20
+  count=50
   while (( $count > 0 )); do
     log "  ... counting down $count"
     node_count=$(kubectl get nodes --no-headers | grep -v NotReady | grep Ready | wc | awk '{print $1}')
@@ -105,7 +105,7 @@ fi
 pods="heapster kube-addon-manager kube-apiserver kube-controller-manager kube-scheduler tiller"
 log "Checking $pods"
 
-count=12
+count=24
 while (( $count > 0 )); do
   for pod in $pods; do
     running=$(kubectl get pods --all-namespaces | grep $pod | grep Running | wc -l)
