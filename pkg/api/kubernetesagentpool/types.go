@@ -20,6 +20,7 @@ type AgentPool struct {
 
 // Properties represents all data needed to define agent pools for Kubernetes
 type Properties struct {
+	ProvisioningState       ProvisioningState        `json:"provisioningState,omitempty"`
 	KubernetesVersion       string                   `json:"kubernetesVersion"`
 	KubernetesEndpoint      string                   `json:"kubernetesEndpoint"`
 	DNSPrefix               string                   `json:"dnsPrefix,omitempty"`
@@ -126,3 +127,22 @@ type ResourcePurchasePlan struct {
 	PromotionCode string `json:"promotionCode,omitempty"`
 	Publisher     string `json:"publisher,omitempty"`
 }
+
+// ProvisioningState represents the current state of container service resource.
+type ProvisioningState string
+
+const (
+	// Creating means ContainerService resource is being created.
+	Creating ProvisioningState = "Creating"
+	// Updating means an existing ContainerService resource is being updated
+	Updating ProvisioningState = "Updating"
+	// Failed means resource is in failed state
+	Failed ProvisioningState = "Failed"
+	// Succeeded means resource created succeeded during last create/update
+	Succeeded ProvisioningState = "Succeeded"
+	// Deleting means resource is in the process of being deleted
+	Deleting ProvisioningState = "Deleting"
+	// Migrating means resource is being migrated from one subscription or
+	// resource group to another
+	Migrating ProvisioningState = "Migrating"
+)
