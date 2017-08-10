@@ -1620,6 +1620,30 @@
     "jumpboxFQDN": {
       "type": "string",
       "value": "[reference(concat('Microsoft.Network/publicIPAddresses/', variables('jumpboxPublicIPAddressName'))).dnsSettings.fqdn]"
+    },
+    "primaryAvailablitySetName": {
+      "type": "string",
+      "value": "[variables('primaryAvailablitySetName')]"
+    },
+    "resourceGroup": {
+      "type": "string",
+      "value": "[variables('resourceGroup')]"
+    },
+    "routeTableName": {
+      "type": "string",
+      "value": "[variables('routeTableName')]"
+    },
+    "securityGroupName": {
+      "type": "string",
+      "value": "[variables('nsgName')]"
+    },
+    "subnetName": {
+      "type": "string",
+      "value": "[variables('subnetName')]"
+    },
+    "virtualNetworkName": {
+      "type": "string",
+      "value": "[variables('virtualNetworkName')]"
     }
   }
 }
