@@ -28,7 +28,10 @@ func getParameters(agentPool *kubernetesagentpool.AgentPool) (map[string]interfa
 			acsengine.AddValue(parametersMap, fmt.Sprintf("linuxKeyVaultID%dCertificateURL%d", i, j), c.CertificateURL)
 		}
 	}
-	KubernetesVersion := agentPool.Properties.KubernetesVersion
+	// KubernetesRelease change in acs-engine screws this code up,
+	// hard-coding KubernetesRelease for now
+	// KubernetesVersion := agentPool.Properties.KubernetesVersion
+	KubernetesRelease := "1.7.2"
 
 	cloudSpecConfig := acsengine.GetCloudSpecConfig(location)
 
@@ -56,12 +59,12 @@ func getParameters(agentPool *kubernetesagentpool.AgentPool) (map[string]interfa
 
 	// Kubernetes
 	acsengine.AddValue(parametersMap, "dockerEngineDownloadRepo", cloudSpecConfig.DockerSpecConfig.DockerEngineRepo)
-	acsengine.AddValue(parametersMap, "kubernetesHyperkubeSpec", KubernetesImagebase+acsengine.KubeImages[KubernetesVersion]["hyperkube"])
-	acsengine.AddValue(parametersMap, "kubernetesPodInfraContainerSpec", cloudSpecConfig.KubernetesSpecConfig.KubernetesImageBase+acsengine.KubeImages[KubernetesVersion]["pause"])
-	acsengine.AddValue(parametersMap, "kubernetesNodeStatusUpdateFrequency", acsengine.KubeImages[KubernetesVersion]["nodestatusfreq"])
-	acsengine.AddValue(parametersMap, "kubernetesCtrlMgrNodeMonitorGracePeriod", acsengine.KubeImages[KubernetesVersion]["nodegraceperiod"])
-	acsengine.AddValue(parametersMap, "kubernetesCtrlMgrPodEvictionTimeout", acsengine.KubeImages[KubernetesVersion]["podeviction"])
-	acsengine.AddValue(parametersMap, "kubernetesCtrlMgrRouteReconciliationPeriod", acsengine.KubeImages[KubernetesVersion]["routeperiod"])
+	acsengine.AddValue(parametersMap, "kubernetesHyperkubeSpec", KubernetesImagebase+acsengine.KubeConfigs[KubernetesRelease]["hyperkube"])
+	acsengine.AddValue(parametersMap, "kubernetesPodInfraContainerSpec", cloudSpecConfig.KubernetesSpecConfig.KubernetesImageBase+acsengine.KubeConfigs[KubernetesRelease]["pause"])
+	acsengine.AddValue(parametersMap, "kubernetesNodeStatusUpdateFrequency", acsengine.KubeConfigs[KubernetesRelease]["nodestatusfreq"])
+	acsengine.AddValue(parametersMap, "kubernetesCtrlMgrNodeMonitorGracePeriod", acsengine.KubeConfigs[KubernetesRelease]["nodegraceperiod"])
+	acsengine.AddValue(parametersMap, "kubernetesCtrlMgrPodEvictionTimeout", acsengine.KubeConfigs[KubernetesRelease]["podeviction"])
+	acsengine.AddValue(parametersMap, "kubernetesCtrlMgrRouteReconciliationPeriod", acsengine.KubeConfigs[KubernetesRelease]["routeperiod"])
 	acsengine.AddValue(parametersMap, "jumpboxSubnet", properties.NetworkProfile.AgentCIDR)
 	acsengine.AddValue(parametersMap, "servicePrincipalClientId", properties.ServicePrincipalProfile.ClientID)
 	acsengine.AddSecret(parametersMap, "servicePrincipalClientSecret", properties.ServicePrincipalProfile.Secret, false)
