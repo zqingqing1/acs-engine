@@ -31,7 +31,7 @@ func getParameters(agentPool *kubernetesagentpool.AgentPool) (map[string]interfa
 	// KubernetesRelease change in acs-engine screws this code up,
 	// hard-coding KubernetesRelease for now
 	// KubernetesVersion := agentPool.Properties.KubernetesVersion
-	KubernetesRelease := "1.7.2"
+	KubernetesRelease := "1.7"
 
 	cloudSpecConfig := acsengine.GetCloudSpecConfig(location)
 
