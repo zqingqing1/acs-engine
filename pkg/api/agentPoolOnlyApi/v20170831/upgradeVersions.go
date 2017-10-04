@@ -1,14 +1,9 @@
-// OSType represents OS types of agents
-package v20171031
+package v20170831
 
-// OrchestratorProfile contains orchestrator properties:
-//  - type: kubernetes, DCOS, etc.
-//  - release: major and minor version numbers
-//  - version: major, minor, and patch version numbers
+// OrchestratorProfile contains Orchestrator properties
 type OrchestratorProfile struct {
-	OrchestratorType    string `json:"orchestratorType"`
-	OrchestratorRelease string `json:"orchestratorRelease"`
-	OrchestratorVersion string `json:"orchestratorVersion"`
+	OrchestratorType    string `json:"orchestratorType" validate:"required"`
+	OrchestratorVersion string `json:"orchestratorVersion" validate:"len=0"`
 }
 
 // PoolUpgradeProfile contains pool properties:

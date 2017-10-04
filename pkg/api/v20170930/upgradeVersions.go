@@ -1,4 +1,4 @@
-package v20170930
+package v20170831
 
 // PoolUpgradeProfile contains pool properties:
 //  - orchestrator type and version
