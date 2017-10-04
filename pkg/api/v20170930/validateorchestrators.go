@@ -3,8 +3,6 @@ package v20170930
 import (
 	"fmt"
 	"strings"
-
-	"github.com/Azure/acs-engine/pkg/api/common"
 )
 
 // Validate implements APIObject
@@ -30,12 +28,12 @@ func (o *OrchestratorProfile) ValidateForUpgrade() error {
 	case DCOS, DockerCE, Swarm:
 		return fmt.Errorf("Upgrade is not supported for orchestrator %s", o.OrchestratorType)
 	case Kubernetes:
-		switch o.OrchestratorRelease {
-		case common.KubernetesRelease1Dot6:
-		case common.KubernetesRelease1Dot7:
-		default:
-			return fmt.Errorf("Upgrade to Kubernetes %s is not supported", o.OrchestratorRelease)
-		}
+		// switch o.OrchestratorRelease {
+		// case common.KubernetesRelease1Dot6:
+		// case common.KubernetesRelease1Dot7:
+		// default:
+		// 	return fmt.Errorf("Upgrade to Kubernetes %s is not supported", o.OrchestratorRelease)
+		// }
 	}
 	return nil
 }

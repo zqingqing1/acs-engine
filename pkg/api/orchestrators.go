@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/Azure/acs-engine/pkg/api/common"
-	"github.com/Azure/acs-engine/pkg/api/upgrade/v20170930"
+	"github.com/Azure/acs-engine/pkg/api/v20170930"
 	"github.com/Azure/acs-engine/pkg/api/vlabs"
 	"github.com/Masterminds/semver"
 )
@@ -125,19 +125,17 @@ func GetUpgradeProfileV20170930(cs *ContainerService, allowCurrentVersionUpgrade
 	if cs.Properties.MasterProfile != nil {
 		upgradeProfile.ControlPlaneProfile = &v20170930.PoolUpgradeProfile{
 			OrchestratorProfile: v20170930.OrchestratorProfile{
-				OrchestratorRelease: orch.OrchestratorRelease,
 				OrchestratorVersion: orch.OrchestratorVersion,
 			},
-			OSType:   string(Linux),
+			OSType:   v20170930.Linux,
 			Upgrades: getUpgradesV20170930(orch, allowCurrentVersionUpgrade),
 		}
 	} else if cs.Properties.HostedMasterProfile != nil {
 		upgradeProfile.ControlPlaneProfile = &v20170930.PoolUpgradeProfile{
 			OrchestratorProfile: v20170930.OrchestratorProfile{
-				OrchestratorRelease: orch.OrchestratorRelease,
 				OrchestratorVersion: orch.OrchestratorVersion,
 			},
-			OSType:   string(Linux),
+			OSType:   v20170930.Linux,
 			Upgrades: getUpgradesV20170930(orch, allowCurrentVersionUpgrade),
 		}
 	}
@@ -145,11 +143,10 @@ func GetUpgradeProfileV20170930(cs *ContainerService, allowCurrentVersionUpgrade
 	for _, agent := range cs.Properties.AgentPoolProfiles {
 		upgradeProfile.AgentPoolProfiles = append(upgradeProfile.AgentPoolProfiles, &v20170930.PoolUpgradeProfile{
 			OrchestratorProfile: v20170930.OrchestratorProfile{
-				OrchestratorRelease: orch.OrchestratorRelease,
 				OrchestratorVersion: orch.OrchestratorVersion,
 			},
 			Name:     agent.Name,
-			OSType:   string(agent.OSType),
+			OSType:   v20170930.Linux,
 			Upgrades: getUpgradesV20170930(orch, allowCurrentVersionUpgrade),
 		})
 	}
@@ -163,7 +160,6 @@ func getUpgradesV20170930(orch *OrchestratorVersionProfile, allowCurrentVersionU
 		for i, h := range orch.Upgrades {
 			upgrades[i] = &v20170930.OrchestratorProfile{
 				OrchestratorType:    orch.OrchestratorType,
-				OrchestratorRelease: h.OrchestratorRelease,
 				OrchestratorVersion: h.OrchestratorVersion,
 			}
 		}
@@ -172,7 +168,6 @@ func getUpgradesV20170930(orch *OrchestratorVersionProfile, allowCurrentVersionU
 	if allowCurrentVersionUpgrade {
 		upgrades = append(upgrades, &v20170930.OrchestratorProfile{
 			OrchestratorType:    orch.OrchestratorType,
-			OrchestratorRelease: orch.OrchestratorRelease,
 			OrchestratorVersion: common.KubeReleaseToVersion[orch.OrchestratorRelease]})
 	}
 	return upgrades

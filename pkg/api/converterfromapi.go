@@ -4,11 +4,11 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/Azure/acs-engine/pkg/api/upgrade/v20170930"
 	"github.com/Azure/acs-engine/pkg/api/v20160330"
 	"github.com/Azure/acs-engine/pkg/api/v20160930"
 	"github.com/Azure/acs-engine/pkg/api/v20170131"
 	"github.com/Azure/acs-engine/pkg/api/v20170701"
+	"github.com/Azure/acs-engine/pkg/api/v20170930"
 	"github.com/Azure/acs-engine/pkg/api/vlabs"
 )
 
@@ -134,13 +134,11 @@ func ConvertOrchestratorVersionProfileToV20170930(api *OrchestratorVersionProfil
 		vProfile.OrchestratorType = v20170930.DockerCE
 	}
 	vProfile.OrchestratorVersion = api.OrchestratorVersion
-	vProfile.OrchestratorRelease = api.OrchestratorRelease
 	vProfile.Default = api.Default
 	if api.Upgrades != nil {
 		vProfile.Upgrades = make([]*v20170930.OrchestratorProfile, len(api.Upgrades))
 		for i, h := range api.Upgrades {
 			vProfile.Upgrades[i] = &v20170930.OrchestratorProfile{
-				OrchestratorRelease: h.OrchestratorRelease,
 				OrchestratorVersion: h.OrchestratorVersion,
 			}
 		}
@@ -162,13 +160,11 @@ func ConvertOrchestratorVersionProfileToVLabs(api *OrchestratorVersionProfile) *
 		vlabsProfile.OrchestratorType = vlabs.SwarmMode
 	}
 	vlabsProfile.OrchestratorVersion = api.OrchestratorVersion
-	vlabsProfile.OrchestratorRelease = api.OrchestratorRelease
 	vlabsProfile.Default = api.Default
 	if api.Upgrades != nil {
 		vlabsProfile.Upgrades = make([]*vlabs.OrchestratorProfile, len(api.Upgrades))
 		for i, h := range api.Upgrades {
 			vlabsProfile.Upgrades[i] = &vlabs.OrchestratorProfile{
-				OrchestratorRelease: h.OrchestratorRelease,
 				OrchestratorVersion: h.OrchestratorVersion,
 			}
 		}

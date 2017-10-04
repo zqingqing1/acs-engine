@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/Azure/acs-engine/pkg/api/agentPoolOnlyApi/v20170831"
+	"github.com/Azure/acs-engine/pkg/api/agentPoolOnlyApi/v20171031"
 	"github.com/Azure/acs-engine/pkg/api/agentPoolOnlyApi/vlabs"
 )
 
@@ -265,6 +266,112 @@ func convertVLabsAgentPoolOnlyCertificateProfile(vlabs *vlabs.CertificateProfile
 	api.ClientPrivateKey = vlabs.ClientPrivateKey
 	api.KubeConfigCertificate = vlabs.KubeConfigCertificate
 	api.KubeConfigPrivateKey = vlabs.KubeConfigPrivateKey
+}
+
+// ConvertV20171031AgentPoolOnly converts an AgentPoolOnly object into an in-memory container service
+func ConvertV20171031AgentPoolOnly(v20171031 *v20171031.ManagedCluster) *ContainerService {
+	c := &ContainerService{}
+	c.ID = v20171031.ID
+	c.Location = v20171031.Location
+	c.Name = v20171031.Name
+	if v20171031.Plan != nil {
+		c.Plan = convertv20171031AgentPoolOnlyResourcePurchasePlan(v20171031.Plan)
+	}
+	c.Tags = map[string]string{}
+	for k, v := range v20171031.Tags {
+		c.Tags[k] = v
+	}
+	c.Type = v20171031.Type
+	c.Properties = convertV20171031AgentPoolOnlyProperties(v20171031.Properties)
+	return c
+}
+
+func convertv20171031AgentPoolOnlyResourcePurchasePlan(v20171031 *v20171031.ResourcePurchasePlan) *ResourcePurchasePlan {
+	return &ResourcePurchasePlan{
+		Name:          v20171031.Name,
+		Product:       v20171031.Product,
+		PromotionCode: v20171031.PromotionCode,
+		Publisher:     v20171031.Publisher,
+	}
+}
+
+func convertV20171031AgentPoolOnlyProperties(obj *v20171031.Properties) *Properties {
+	properties := &Properties{
+		ProvisioningState: ProvisioningState(obj.ProvisioningState),
+		MasterProfile:     nil,
+	}
+
+	properties.HostedMasterProfile = &HostedMasterProfile{}
+	properties.HostedMasterProfile.DNSPrefix = obj.DNSPrefix
+	properties.HostedMasterProfile.FQDN = obj.FQDN
+
+	properties.OrchestratorProfile = convertV20171031AgentPoolOnlyOrchestratorProfile(obj.KubernetesVersion)
+
+	properties.AgentPoolProfiles = make([]*AgentPoolProfile, len(obj.AgentPoolProfiles))
+	for i := range obj.AgentPoolProfiles {
+		properties.AgentPoolProfiles[i] = convertV20171031AgentPoolOnlyAgentPoolProfile(obj.AgentPoolProfiles[i], AvailabilitySet)
+	}
+	if obj.LinuxProfile != nil {
+		properties.LinuxProfile = convertV20171031AgentPoolOnlyLinuxProfile(obj.LinuxProfile)
+	}
+	if obj.WindowsProfile != nil {
+		properties.WindowsProfile = convertV20171031AgentPoolOnlyWindowsProfile(obj.WindowsProfile)
+	}
+
+	if obj.ServicePrincipalProfile != nil {
+		properties.ServicePrincipalProfile = convertV20171031AgentPoolOnlyServicePrincipalProfile(obj.ServicePrincipalProfile)
+	}
+
+	return properties
+}
+
+func convertV20171031AgentPoolOnlyLinuxProfile(obj *v20171031.LinuxProfile) *LinuxProfile {
+	api := &LinuxProfile{
+		AdminUsername: obj.AdminUsername,
+	}
+	api.SSH.PublicKeys = []PublicKey{}
+	for _, d := range obj.SSH.PublicKeys {
+		api.SSH.PublicKeys = append(api.SSH.PublicKeys, PublicKey{KeyData: d.KeyData})
+	}
+	return api
+}
+
+func convertV20171031AgentPoolOnlyWindowsProfile(obj *v20171031.WindowsProfile) *WindowsProfile {
+	return &WindowsProfile{
+		AdminUsername: obj.AdminUsername,
+		AdminPassword: obj.AdminPassword,
+	}
+}
+
+func convertV20171031AgentPoolOnlyOrchestratorProfile(kubernetesVersion string) *OrchestratorProfile {
+	orchestratorProfile := &OrchestratorProfile{
+		OrchestratorType: Kubernetes,
+	}
+
+	orchestratorProfile.OrchestratorVersion = kubernetesVersion
+
+	return orchestratorProfile
+}
+
+func convertV20171031AgentPoolOnlyAgentPoolProfile(v20171031 *v20171031.AgentPoolProfile, availabilityProfile string) *AgentPoolProfile {
+	api := &AgentPoolProfile{}
+	api.Name = v20171031.Name
+	api.Count = v20171031.Count
+	api.VMSize = v20171031.VMSize
+	api.OSDiskSizeGB = v20171031.OSDiskSizeGB
+	api.OSType = OSType(v20171031.OSType)
+	api.StorageProfile = v20171031.StorageProfile
+	api.VnetSubnetID = v20171031.VnetSubnetID
+	api.Subnet = v20171031.GetSubnet()
+	api.AvailabilityProfile = availabilityProfile
+	return api
+}
+
+func convertV20171031AgentPoolOnlyServicePrincipalProfile(obj *v20171031.ServicePrincipalProfile) *ServicePrincipalProfile {
+	return &ServicePrincipalProfile{
+		ClientID: obj.ClientID,
+		Secret:   obj.Secret,
+	}
 }
 
 func isAgentPoolOnlyClusterJSON(contents []byte) bool {

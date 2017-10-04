@@ -1,7 +1,5 @@
-package v20170930
-
 // OSType represents OS types of agents
-type OSType string
+package v20171031
 
 // OrchestratorProfile contains orchestrator properties:
 //  - type: kubernetes, DCOS, etc.
@@ -21,7 +19,7 @@ type OrchestratorProfile struct {
 type PoolUpgradeProfile struct {
 	OrchestratorProfile
 	Name     string                 `json:"name,omitempty"`
-	OSType   string                 `json:"osType,omitempty"`
+	OSType   OSType                 `json:"osType,omitempty"`
 	Upgrades []*OrchestratorProfile `json:"upgrades,omitempty"`
 }
 
@@ -31,19 +29,4 @@ type PoolUpgradeProfile struct {
 type UpgradeProfile struct {
 	ControlPlaneProfile *PoolUpgradeProfile   `json:"controlPlaneProfile"`
 	AgentPoolProfiles   []*PoolUpgradeProfile `json:"agentPoolProfiles"`
-}
-
-// OrchestratorVersionProfile contains information of a supported orchestrator version:
-//  - orchestrator type and version
-//  - whether this orchestrator version is deployed by default if orchestrator release is not specified
-//  - list of available upgrades for this orchestrator version
-type OrchestratorVersionProfile struct {
-	OrchestratorProfile
-	Default  bool                   `json:"default,omitempty"`
-	Upgrades []*OrchestratorProfile `json:"upgrades,omitempty"`
-}
-
-// OrchestratorVersionProfileList contains list of version profiles for supported orchestrators
-type OrchestratorVersionProfileList struct {
-	Orchestrators []*OrchestratorVersionProfile `json:"orchestrators"`
 }
