@@ -1,5 +1,5 @@
-hash: 2f6c0bcbc189ff33a1bc4bb1d3b71ca4cfb5d712e07dc3af96de2db5463e24f2
-updated: 2017-10-26T17:08:11.487094-07:00
+hash: 6bf771a3a0cc938aa45c286edde4409dd9336ffc496c686494c7f9028a608084
+updated: 2017-10-30T18:11:49.5825617Z
 imports:
 - name: github.com/alexcesaro/statsd
   version: 7fea3f0d2fab1ad973e641e51dba45443a311a90
@@ -77,7 +77,7 @@ imports:
 - name: github.com/inconshreveable/mousetrap
   version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
 - name: github.com/influxdata/influxdb
-  version: c38f46a4cd6c03b03be039910444bd784788d4ac
+  version: 895b45385f4d4e3363e1dd6cb5360fe89967195a
   subpackages:
   - client/v2
   - models
@@ -159,7 +159,7 @@ imports:
   subpackages:
   - codec
 - name: golang.org/x/crypto
-  version: eb71ad9bd329b5ac0fd0148dd99bd62e8be8e035
+  version: 2509b142fb2b797aa7587dad548f113b2c0f20ce
   subpackages:
   - curve25519
   - ed25519
@@ -168,7 +168,7 @@ imports:
   - ssh/agent
   - ssh/terminal
 - name: golang.org/x/net
-  version: 7b572d500b0702f1ea30a47083ce2e1e5c61edba
+  version: c73622c77280266305273cb545f54516ced95b93
   repo: https://github.com/golang/net.git
   vcs: git
   subpackages:
@@ -181,7 +181,7 @@ imports:
   - idna
   - lex/httplex
 - name: golang.org/x/sys
-  version: 8f0908ab3b2457e2e15403d3697c9ef5cb4b57a9
+  version: d6c3f2be455466eedffcfc91793e2c808b7a7410
   subpackages:
   - unix
   - windows
@@ -220,7 +220,7 @@ imports:
 - name: gopkg.in/inf.v0
   version: 3887ee99ecf07df5b447e9b00d9c0b2adaa9f3e4
 - name: gopkg.in/yaml.v2
-  version: eb3733d160e74a9c7e442f435eb3bea458e1d19f
+  version: 53feefa2559fb8dfa8d81baad31be332c97d6c77
 - name: k8s.io/apimachinery
   version: 1fd2e63a9a370677308a42f24fd40c86438afddf
   subpackages:
