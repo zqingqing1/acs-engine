@@ -37,12 +37,19 @@ To get the list of all available Kubernetes versions and upgrades, run the *orch
         {
           "orchestratorVersion": "1.8.2"
         }
+        {
+          "orchestratorVersion": "1.8.4"
+        }
       ]
     },
     {
       "orchestratorType": "Kubernetes",
       "orchestratorVersion": "1.5.8",
       "upgrades": [
+        {
+          "orchestratorType": "",
+          "orchestratorVersion": "1.6.13"
+        },
         {
           "orchestratorType": "",
           "orchestratorVersion": "1.6.11"
@@ -82,6 +89,9 @@ To get the information specific to the cluster, provide its current orchestrator
         },
         {
           "orchestratorVersion": "1.8.2"
+        },
+                {
+          "orchestratorVersion": "1.8.4"
         },
         {
           "orchestratorVersion": "1.7.9"
